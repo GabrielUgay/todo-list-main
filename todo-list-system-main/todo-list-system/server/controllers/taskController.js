@@ -39,17 +39,26 @@ function validateTaskInput(body, isUpdate = false) {
 
   // Title
   if (body.title !== undefined || !isUpdate) {
-    const title = typeof body.title === 'string' ? body.title.trim() : '';
-    if (!title) errors.push('Task title cannot be empty');
-    else if (title.length > 100) errors.push('Task title must be 100 characters or less');
-    else data.title = xssFilters.inHTMLData(title);
+    const title = body.title
+    if (typeof title !== "string") errors.push('Task title is supposed to be a string');
+    else {
+      if (title.length > 100) errors.push('Task title must be 100 characters or less');
+      else {
+        data.title = xssFilters.inHTMLData(title)
+      }
+    }
   }
 
   // Description
   if (body.description !== undefined) {
-    const description = String(body.description).trim();
-    if (description.length > 500) errors.push('Description must be 500 characters or less');
-    else data.description = xssFilters.inHTMLData(description);
+    const description = body.description
+    if (typeof description !== "string") errors.push('Task description is supposed to be a string');
+    else {
+      if (description.length > 500) errors.push('Description must be 500 characters or less');
+      else {
+        data.description = xssFilters.inHTMLData(description);
+      }
+    }
   }
 
   // Due date ("" means no due date)
@@ -59,7 +68,7 @@ function validateTaskInput(body, isUpdate = false) {
     } else {
       const date = new Date(body.dueDate);
       if (Number.isNaN(date.getTime())) errors.push('Due date is not a valid date');
-      else data.dueDate = date;
+      else data.dueDate = xssFilters.inHTMLData(date);
     }
   }
 

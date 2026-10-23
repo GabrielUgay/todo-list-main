@@ -35,6 +35,9 @@ const limiter = rateLimit({
   ipv6Subnet: 56
 })
 
+// ---------- Prevent NoSQL Injection ----------
+mongoose.set("sanitizeFilter", true);
+
 // ---------- Use Rate Limiting ----------
 app.use(limiter)
 

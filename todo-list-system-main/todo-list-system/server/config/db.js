@@ -15,6 +15,7 @@ async function connectDB() {
   }
 
   try {
+    await mongoose.set('sanitizeFilter', true);
     await mongoose.connect(uri);
     console.log(`MongoDB connected: ${mongoose.connection.host}/${mongoose.connection.name}`);
   } catch (error) {
